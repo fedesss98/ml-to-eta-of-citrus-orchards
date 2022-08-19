@@ -1,3 +1,6 @@
+# Exclude data from source control
+/project/data/
+
 # Created by https://www.toptal.com/developers/gitignore/api/python,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,linux
 
