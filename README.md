@@ -14,3 +14,11 @@ Among the different ML algorithms developed, the best performance was achieved b
 In this case, the values of the root mean square error (RMSE) and coefficient of determination (R2) associated with cross-validation were 0.39 mm/d and 0.84, respectively. 
 
 Finally, the results obtained show that the joint use of agro-meteorological and remote sensing data improves the performance of evapotranspiration forecasts compared with models using only weather variables. 
+
+### Structure
+ROOT
+|— PAPER
+|  |—DRAFTS
+|  |—BIBLIOGRAPHY
+|  
+|—CODE 
