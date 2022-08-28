@@ -1,5 +1,8 @@
 # Exclude data from source control
-/project/data/
+/eta_ml/data/
+
+# Exclude test code
+/eta_ml/tests/
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,linux
