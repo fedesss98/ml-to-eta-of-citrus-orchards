@@ -1,6 +1,6 @@
 """
 Created by Federico Amato
-2022 - 09 - 27
+2022 - 08 - 27
 
 Copy the excel file with raw data in /data/raw/ project folder.
 Copy the excel file from ORIGIN folder.
