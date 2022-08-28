@@ -71,7 +71,7 @@ def save_data(dataframe, fname='processed.pickle'):
 
 def main():
     print(f"\n\n{'_'*10}START CODE{'_'*10}\n\n")
-    print(PROJ_ROOT)
+    print(PROJ_ROOT, end='\n\n')
     input_file = PROJ_ROOT + '/eta_ml/data/interim/' + 'castelvetrano.pickle'
 
     # Make data frame
