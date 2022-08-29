@@ -1,3 +1,16 @@
+"""
+Created by Federico Amato
+2022 - 08 - 27
+
+Preprocess data.
+Take raw data in pickle or csv format (found in /data/interim)
+and preprocess them with:
+- Standard scaling to regularize data subtracting mean and dividing
+  by variance
+- Drop dates with missing features
+Save final data in /data/processed/processed.pickle
+
+"""
 import pandas as pd
 import os
 from sklearn.preprocessing import StandardScaler
@@ -43,6 +56,9 @@ def preprocess_data(data):
         print_scaler_params(scaler)
         # Scale data
         data = scale_and_frame(data, scaler)
+        save_data(data, processed=False, fname='scaled.pickle')
+        # Drop na
+        data = drop_na(data)
     except Exception as e:
         print("Error in scaling: " + str(e))
     return data
@@ -64,29 +80,51 @@ def scale_and_frame(df, scaler):
     return df
 
 
-def save_data(dataframe, fname='processed.pickle'):
-    fname = PROJ_ROOT + '/eta_ml/data/processed/' + fname
+def drop_na(df):
+    """Drop only features missing values dates"""
+    features = [col for col in df.columns if col != 'ETa']
+    df = df.dropna(subset=features)
+    return df
+
+
+def save_data(dataframe, processed=True, fname='processed.pickle'):
+    folder = 'processed/' if processed else 'interim/'
+    fname = PROJ_ROOT + '/eta_ml/data/' + folder + fname
     dataframe.to_pickle(fname)
 
 
 def main():
-    print(f"\n\n{'_'*10}START CODE{'_'*10}\n\n")
+    print(f"\n\n{'='*10} START PREPROCESSING {'='*10}\n\n")
     print(PROJ_ROOT, end='\n\n')
     input_file = PROJ_ROOT + '/eta_ml/data/interim/' + 'castelvetrano.pickle'
 
     # Make data frame
     df = read_data(input_file)
+    # save length for output
+    features_len = len(df)
+    target_len = len(df['ETa'].dropna())
+
     # Preprocess data
-    print("Preprocessing: Standard Scaler")
+    print("Preprocessing: scaling and dropping...")
     df = preprocess_data(df)
-    print(df.head())
+    # save length for output
+    features_processed_len = len(df)
+    target_processed_len = len(df['ETa'].dropna())
+
     # Plot scaled data
     df.plot(subplots=True, figsize=(12, 12))
     # Save scaled dataframe
-    output_file = 'processed.pickle'
-    save_data(df, output_file)
+    save_data(df)
 
-    print(f"\n\n{'_'*10}END CODE{'_'*10}\n\n")
+    print(f"Number of points before and after preprocessing:\n"
+          f"  Before:\n"
+          f"  - Features: {features_len}\n"
+          f"  - Target: {target_len}")
+    print(f"  After:\n"
+          f"  - Features: {features_processed_len}\n"
+          f"  - Target: {target_processed_len}")
+
+    print(f"\n\n{'='*10} END PREPROCESSING {'='*10}\n\n")
 
 
 if __name__ == "__main__":
