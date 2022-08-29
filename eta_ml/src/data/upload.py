@@ -42,7 +42,7 @@ def format_data(fname):
 
 
 def main():
-    print(f"\n\n{'_'*10}START PROJECT{'_'*10}\n\n")
+    print(f"\n\n{'--'*10} START UPLOAD {'--'*10}\n\n")
     print(PROJ_ROOT)
     filename = 'Database_Castelvetrano.xlsx'
 
@@ -58,7 +58,7 @@ def main():
     print(data.head())
     data.plot(subplots=True, figsize=(12, 12))
 
-    print(f"\n\n{'_'*10}END PROJECT{'_'*10}\n\n")
+    print(f"\n\n{'--'*10} END UPLOAD {'--'*10}\n\n")
     return None
 
 
