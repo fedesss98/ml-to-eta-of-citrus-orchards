@@ -18,8 +18,24 @@ from sklearn.preprocessing import StandardScaler
 PROJ_ROOT = os.path.abspath(os.path.join(os.pardir))
 
 
+def read_processed_data(fname):
+    fname = PROJ_ROOT + '/eta_ml/data/processed' + 'processed.py'
+    df = pd.read_pickle(fname)
+    return df
+
+
+def get_features(data):
+    features = data.drop(labels='ETa', axis=1)
+    return features
+
+
+def get_target(data):
+    target = data['ETa']
+    return target
+
+
 def read_data(fname):
-    """Read data from a csv or pickle file"""
+    """Read raw data from a csv or pickle file"""
     # Get data file extension
     _, ext = os.path.splitext(fname)
     # Initialize data frame
@@ -50,6 +66,7 @@ def read_pickle(fname):
 
 def preprocess_data(data):
     """Scale data dataframe with Scikit Standard Scaler"""
+    print(data)
     try:
         scaler = StandardScaler().fit(data)
         # Print data means and variances
@@ -82,7 +99,7 @@ def scale_and_frame(df, scaler):
 
 def drop_na(df):
     """Drop only features missing values dates"""
-    features = [col for col in df.columns if col != 'ETa']
+    features = get_features(df).columns
     df = df.dropna(subset=features)
     return df
 
