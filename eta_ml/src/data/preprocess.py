@@ -3,6 +3,7 @@ Created by Federico Amato
 2022 - 08 - 27
 
 Preprocess data.
+
 Take raw data in pickle or csv format (found in /data/interim)
 and preprocess them with:
 - Standard scaling to regularize data subtracting mean and dividing
@@ -18,8 +19,8 @@ from sklearn.preprocessing import StandardScaler
 PROJ_ROOT = os.path.abspath(os.path.join(os.pardir))
 
 
-def read_processed_data(fname):
-    fname = PROJ_ROOT + '/eta_ml/data/processed' + 'processed.py'
+def read_processed_data(fname='processed.pickle'):
+    fname = PROJ_ROOT + '/eta_ml/data/processed/' + fname
     df = pd.read_pickle(fname)
     return df
 
