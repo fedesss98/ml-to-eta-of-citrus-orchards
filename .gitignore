@@ -1,5 +1,6 @@
 # Exclude data from source control
 /eta_ml/data/
+PAPER/BIBLIOGRAPHY/*
 
 # Exclude test code
 /eta_ml/tests/

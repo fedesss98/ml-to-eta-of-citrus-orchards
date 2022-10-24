@@ -32,8 +32,7 @@ class GaussianRegressionModel(GaussianProcessRegressor):
         self.y = get_target(data)
         # Create train and test splits
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
-            self.X, self.y, test_size=0.33,
-            random_state=self.seed, shuffle=False,
+            self.X, self.y, test_size=0.33, random_state=self.seed
         )
 
     def train(self, X_train=None, y_train=None):

@@ -13,17 +13,18 @@ import pandas as pd
 
 from gaussian_process import GaussianRegressionModel
 # kernels
-from sklearn.gaussian_process.kernels import ConstantKernel, RBF, ExpSineSquared, RationalQuadratic, WhiteKernel
+from sklearn.gaussian_process.kernels import RBF, ExpSineSquared, RationalQuadratic, WhiteKernel
 
-import sys
-sys.path.append('src')
-from data.preprocess import read_processed_data
+# import sys
+# sys.path.append('src')
+# from data.preprocess import read_processed_data
 
 import neptune.new as neptune
 
 run = neptune.init(
     project='unipa-it-ml/ml-to-citrus-orchard-eta',
-    tags=["gaussian_process", "fa"],
+    tags="gaussian_process, fa",
+    api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI5YzhiNjY2NC04ZDk1LTQ1MTktOWRkNy1mMDI1OTc5OTRjNzQifQ=='
 )
 
 PROJ_ROOT = os.path.abspath(os.path.join(os.pardir))
@@ -53,14 +54,6 @@ def make_kernel(**params):
     )
     return long_term_trend_kernel + seasonal_kernel + irregularities_kernel + noise_kernel
 
-def make_kernel_2():
-    constant_value = 1.0
-    bounds = (1e-05, 100000.0)
-    constant_kernel = ConstantKernel(constant_value=constant_value, constant_value_bounds=bounds)
-    length = 1.0
-    bounds = (1e-05, 100000.0)
-    rbf = RBF(length_scale=length, length_scale_bounds=bounds)
-    return constant_kernel*rbf
 
 def kernel_params():
     kernel_params = {
@@ -93,25 +86,19 @@ def main():
     data = read_processed_data().dropna()
     # Gaussian Process Model
     kernel = make_kernel(**kernel_params())
-    #kernel = make_kernel_2()
     params = model_params(kernel)
-    seed = 21973
+    seed = 21979
     model = GaussianRegressionModel(data, seed, **params)
     model.train()
 
     test_score = model.test()
     print(f"Score: {test_score:.4f}")
 
-    # Predict test data and save them
-    y_predict = model.predict()
-    y_predict = pd.DataFrame(y_predict)
-    y_predict.to_pickle(PROJ_ROOT + '/eta_ml/data/visualization/' + 'prediction.pickle')
 
     # Log to Neptune
     params['seed'] = seed
     run['parameters'] = params
 
-    run['train/kernel'] = model.kernel_
     run['test/r2'] = test_score
 
     print(f"\n\n{'//'*10} END TRAINING {'//'*10}\n\n")

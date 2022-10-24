@@ -125,6 +125,7 @@ def main():
     # Preprocess data
     print("Preprocessing: scaling and dropping...")
     df = preprocess_data(df)
+    print(df)
     # save length for output
     features_processed_len = len(df)
     target_processed_len = len(df['ETa'].dropna())
