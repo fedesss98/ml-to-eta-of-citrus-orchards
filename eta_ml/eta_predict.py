@@ -49,11 +49,11 @@ m13 = ['Rs', 'U2', 'RHmin', 'RHmax', 'Tmin', 'Tmax', 'SWC', 'NDVI', 'NDWI', 'DOY
 
 FEATURES = {
     'model 1': m1,
-    'model 2': m2,
-    'model 3': m3,
-    'model 7': m7,
-    'model 9': m9,
-    'model 10': m10,  
+    # 'model 2': m2,
+    # 'model 3': m3,
+    # 'model 7': m7,
+    # 'model 9': m9,
+    # 'model 10': m10,  
     }
 
 MODELS = {
@@ -63,11 +63,11 @@ MODELS = {
             random_state=12,
             ccp_alpha=0.0,        
         ),
-    'mlp': MLPRegressor(
-            hidden_layer_sizes=(100, 100, 100),
-            max_iter=1000,
-            random_state=32652,  # 32652
-        ),
+    # 'mlp': MLPRegressor(
+    #         hidden_layer_sizes=(100, 100, 100),
+    #         max_iter=1000,
+    #         random_state=32652,  # 32652
+    #     ),
     # 'knn': KNeighborsRegressor(
     #     n_neighbors=5,
     #     weights='distance',        
@@ -77,7 +77,7 @@ MODELS = {
 MAKE_DATA_PARAMETERS = {
     'input_file': (ROOT_DIR / 'data/raw/db_villabate_deficit_9_2018_2021_irr.csv'),    
     'output_file': ROOT_DIR / 'data/interim/data.pickle',
-    'visualize': False,
+    'visualize': True,
     }
 
 PREPROCESS_PARAMETERS = {

@@ -59,6 +59,7 @@ def main(input_file, output_file, visualize=True):
     if visualize:
         data.plot(subplots=True, figsize=(10, 16))
         plt.savefig(ROOT_DIR / 'visualization/data' / 'raw_data.png')
+        plt.show()
     logging.info(f'\n\n{"-"*21}')
     return None
 

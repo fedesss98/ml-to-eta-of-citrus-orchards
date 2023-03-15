@@ -1,7 +1,9 @@
 # ETa predictions via ML methods
 
 ## Models
-- Gaussian Process Regression ([ScikitLearn](https://scikit-learn.org/stable/auto_examples/gaussian_process/plot_gpr_co2.html))
+- Random Forest ([ScikitLearn](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html))
+- MultiLayer Perceptron ([ScikitLearn](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html))
+- !!! ToDo: Gaussian Process Regression ([ScikitLearn](https://scikit-learn.org/stable/auto_examples/gaussian_process/plot_gpr_co2.html))
 
 ## Structure
 - **data** <--- Data used;
@@ -10,7 +12,7 @@
 - --data/processed <--- Final processed data used (scaled with [Standard Scaler](https://scikit-learn.org/stable/modules/preprocessing.html));
 - **models** <--- Trained models saved for later use;
 - **notebooks** <--- Jupyter notebooks to quickly work on data;
-- **reports** <--- Figures and tables with results to use for pubblication;
-- **src** <--- Actual Python files to populate other folders;
+- **logs** <--- Logs of every run and results;
+- **eta_ml** <--- Actual Python files to populate other folders;
 - **tests** <--- Raw Python files to test code;
 - **visualization** <--- Figures to visualize data
