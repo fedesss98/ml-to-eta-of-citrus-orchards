@@ -51,7 +51,7 @@ ROOT
 Clone this repository:
 
 <code>
-git clone https://github.com/fedesss98/ml-to-eta-of-citrus-orchards.git
+$ git clone https://github.com/fedesss98/ml-to-eta-of-citrus-orchards.git
 </code>
 
 Use the file `environment.yml` to install dependencies.
