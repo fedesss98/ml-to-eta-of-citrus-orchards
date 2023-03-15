@@ -16,9 +16,29 @@ In this case, the values of the root mean square error (RMSE) and coefficient of
 Finally, the results obtained show that the joint use of agro-meteorological and remote sensing data improves the performance of evapotranspiration forecasts compared with models using only weather variables. 
 
 ### Structure
+Be sure to have this structure in your project:
 ROOT
 |— PAPER
 |  |—DRAFTS
 |  |—BIBLIOGRAPHY
 |  
-|—CODE 
+|— eta_ml
+|   |- data
+|   |   |- external
+|   |   |- raw
+|   |   |- interim
+|   |   |- processed
+|   |   |- predicted
+|   |
+|   |- models
+|   |
+|   |- prediction
+|   |
+|   |- visualization
+|   |
+|   |- eta_ml
+|   |   |- data
+|   |   |- models
+|   |   |- prediction
+|   |   |- visualization
+|   |
