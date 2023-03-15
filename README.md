@@ -15,30 +15,45 @@ In this case, the values of the root mean square error (RMSE) and coefficient of
 
 Finally, the results obtained show that the joint use of agro-meteorological and remote sensing data improves the performance of evapotranspiration forecasts compared with models using only weather variables. 
 
-### Structure
+## Structure
 Be sure to have this structure in your project:
+
+<pre>
 ROOT
-|— PAPER
-|  |—DRAFTS
-|  |—BIBLIOGRAPHY
+|— PAPER\
+|  |—DRAFTS\
+|  |—BIBLIOGRAPHY\
 |  
-|— eta_ml
-|   |- data
-|   |   |- external
-|   |   |- raw
-|   |   |- interim
-|   |   |- processed
-|   |   |- predicted
+|— eta_ml\
+|   |- data\
+|   |   |- external\
+|   |   |- raw\
+|   |   |- interim\
+|   |   |- processed\
+|   |   |- predicted\
+|   |\
+|   |- models\
+|   |\
+|   |- prediction\
+|   |\
+|   |- visualization\
+|   |\
+|   |- eta_ml\
+|   |   |- data\
+|   |   |- models\
+|   |   |- prediction\
+|   |   |- visualization\
 |   |
-|   |- models
-|   |
-|   |- prediction
-|   |
-|   |- visualization
-|   |
-|   |- eta_ml
-|   |   |- data
-|   |   |- models
-|   |   |- prediction
-|   |   |- visualization
-|   |
+|   
+</pre>
+
+## Installation
+Clone this repository:
+
+<code>
+git clone https://github.com/fedesss98/ml-to-eta-of-citrus-orchards.git
+</code>
+
+Use the file `environment.yml` to install dependencies.
+
+Run the script `eta_predict.py` inside `eta_ml` folder to generate predictions and models.
