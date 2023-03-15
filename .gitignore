@@ -1,5 +1,9 @@
 # Exclude data from source control
 /eta_ml/data/
+/eta_ml/logs/
+/eta_ml/models/*.joblib
+/eta_ml/notebooks/
+/eta_ml/visualization/*
 PAPER/REFERENCES/*
 
 # Exclude test code
