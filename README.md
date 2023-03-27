@@ -178,11 +178,8 @@ visualize [boolean] (default = True): indicates wether to plot target prediction
 
 ---
 
-[^1]: We used as models:
-  - [Multy-layer Perceptron Regressor](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html),
-  - [Random Forest Regressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html).
-
-[^2]: Metrics documentation can be found following these links: [$R^2$ coefficient](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html),
+[^1]: We used as models the [Multy-layer Perceptron Regressor](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html) and [Random Forest Regressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html).
+[^2]: Metrics documentation can be found following these links: [R2 coefficient](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html),
 [mean squared error](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html).
 
 
