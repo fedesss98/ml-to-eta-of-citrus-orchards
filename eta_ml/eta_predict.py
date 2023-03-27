@@ -49,11 +49,17 @@ m13 = ['Rs', 'U2', 'RHmin', 'RHmax', 'Tmin', 'Tmax', 'SWC', 'NDVI', 'NDWI', 'DOY
 
 FEATURES = {
     'model 1': m1,
-    # 'model 2': m2,
-    # 'model 3': m3,
-    # 'model 7': m7,
-    # 'model 9': m9,
-    # 'model 10': m10,  
+    'model 2': m2,
+    'model 3': m3,
+    'model 4': m4, 
+    'model 5': m5, 
+    'model 6': m6, 
+    'model 7': m7,
+    'model 8': m8, 
+    'model 9': m9,
+    'model 10': m10,  
+    'model 11': m11, 
+    'model 12': m12, 
     }
 
 MODELS = {
@@ -63,11 +69,11 @@ MODELS = {
             random_state=12,
             ccp_alpha=0.0,        
         ),
-    # 'mlp': MLPRegressor(
-    #         hidden_layer_sizes=(100, 100, 100),
-    #         max_iter=1000,
-    #         random_state=32652,  # 32652
-    #     ),
+    'mlp': MLPRegressor(
+            hidden_layer_sizes=(100, 100, 100),
+            max_iter=1000,
+            random_state=32652,  # 32652
+        ),
     # 'knn': KNeighborsRegressor(
     #     n_neighbors=5,
     #     weights='distance',        
@@ -91,7 +97,6 @@ PREPROCESS_PARAMETERS = {
     }
 
 PREDICTION_PARAMETERS = {
-    # 'output': ROOT_DIR / 'data/predicted'/'predicted.pickle',
     'eta_output': ROOT_DIR / 'data/predicted' / 'eta_predicted.pickle',
     'features': None,
     'visualize': False,
@@ -151,8 +156,7 @@ def make_prediction(features_set, model_name, model_scores, kts):
     trainer = ModelTrainer(**MODEL_PARAMETERS)
     model_scores[model_name][features_set] = trainer.scores
     kts[model_name][features_set] = trainer.kt
-    
-    
+
     predict(model=f'{model_name}.joblib', **PREDICTION_PARAMETERS)
     
     return model_scores
@@ -176,6 +180,7 @@ def prettify_scores(scores):
     scores.index = index
     return scores
 
+
 def reframe_kts(kts):
     # Take the temporal index
     idx = kts[list(MODELS.keys())[0]][list(FEATURES.keys())[0]].index
@@ -185,6 +190,7 @@ def reframe_kts(kts):
            for feature_set, values in inner_dict.items()}
     kts = pd.DataFrame(kts, index=idx)
     return kts
+
 
 def make_violins(kts, suptitle=None):
     models = kts.columns.get_level_values(0).unique()

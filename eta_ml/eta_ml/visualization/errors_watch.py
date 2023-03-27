@@ -14,7 +14,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 PLOTS_DIR = ROOT_DIR / 'visualization/errors/violins'
 
-PLOTS_FONT_SIZE = 18
+PLOTS_FONT_SIZE = 15
 
 
 def ask_for_run_id():
@@ -40,12 +40,12 @@ def read_kts(run_id):
 
 def make_violins(kts, suptitle=None):
     data_to_plot = kts.copy()
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(12, 4.5))
     if suptitle is not None:
         fig.suptitle(suptitle, fontsize=PLOTS_FONT_SIZE)
     sns.violinplot(data_to_plot, ax=ax)
     
-    ax.set_ylim(-1.5, 3.1)
+    ax.set_ylim(-1, 2)
     ax.tick_params(axis='x', rotation=45)
     ax.axhline(y=0, ls='--', c='k')
     ax.set_ylabel("Relative error [mm/day]", fontsize=PLOTS_FONT_SIZE*1.2)
@@ -98,5 +98,5 @@ def main(run_id=None):
 
 if __name__ == "__main__":
     # Use the log ID of the run you want to analyze
-    run_id = '55323T'
+    run_id = '71200X'
     main(run_id)

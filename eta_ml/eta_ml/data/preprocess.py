@@ -50,11 +50,9 @@ def get_data(fname):
 def get_features(df, features):
     if len(features) <= 0:
         features = [
-            'Rs', 'U2', 'RHmin', 'RHmax', 'Tmin', 
-            'Tmax', 'SWC', 
-            'DOY', 
-            'Month', 
-            'Week', 
+            'Rs',
+            'Tavg',
+            'DOY',
             'ETo'
             ]
     for f in features:
@@ -80,9 +78,9 @@ def make_dataframe(data, features):
 
 def make_scaler(scaler):
     if isinstance(scaler, str):
-        if scaler == 'Standard':
+        if scaler.lower() == 'standard':
             scaler = StandardScaler()
-        elif scaler == 'MinMax':
+        elif scaler.lower() == 'minmax':
             scaler = MinMaxScaler(feature_range=(-1, 1))
     else:
         try:
@@ -216,7 +214,7 @@ def preprocess_data(input_file, scaler, k, k_seed, output_file, visualize):
     - Scale data with StandardScaler or MinMaxScaler
 
     Train set must never see test set, even during the scaling.
-    Therefore K-folds slpit must come before the scaling.
+    Therefore, K-folds slpit must come before the scaling.
 
     """
     main(input_file, scaler, k, k_seed, output_file, visualize=visualize)

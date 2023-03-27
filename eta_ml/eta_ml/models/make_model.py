@@ -45,7 +45,7 @@ class ModelTrainer:
         models = dict()
         self.scores = np.zeros((k, 2))
         for fold in range(k):
-            trained_model= self.train_model(self.model, fold)
+            trained_model = self.train_model(self.model, fold)
             models[fold] = trained_model
             self.scores[fold] = self.test_model(trained_model, fold)
         if visualize_error:
@@ -81,7 +81,6 @@ class ModelTrainer:
         # Shifted Sine function
         y = a*np.sin(np.pi*v*x - np.pi*phase) - q
         return y
-    
 
     def train_model(self, model, k):
         train = pd.read_pickle(ROOT_DIR/'data/processed'/f'train_fold_{k}.pickle')
@@ -89,7 +88,6 @@ class ModelTrainer:
         y_train = train.loc[:, 'ETa'].values.ravel()
         model.fit(X_train, y_train)
         return model
-
 
     def print_error(self):
         # Load complete set of measures
@@ -152,11 +150,9 @@ class ModelTrainer:
         scores = (r2, rmse)
         return scores
 
-
     def save_model(self):
         dump(self.best_model, ROOT_DIR/'models'/f'{self.model_name}.joblib')
         return None
-
 
     def log_run(self, model, size, scores):
         logging.info(model)
@@ -274,6 +270,12 @@ make_model.add_command(rf)
 make_model.add_command(mlp)
 make_model.add_command(svr)
 make_model.add_command(gpr)
+
+
+def main(model, model_name, features, visualize_errors=False):
+    """ Train and save model """
+    model = ModelTrainer(model, model_name, features, visualize_errors)
+    return None
 
 if __name__ == "__main__":
     rf()

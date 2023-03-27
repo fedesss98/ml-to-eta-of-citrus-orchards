@@ -90,15 +90,7 @@ def plot_linear(model, measures, features):
     return None
 
 
-def compute_kc(eta):
-    eta, eto = rescale_series(eta)
-    kc = pd.DataFrame()
-    kc['Kc'] = eta['ETa'] / eto['ETo']
-    kc['Source'] = eta['Source']
-    return kc
-
-
-def main(model, output=None, features=None, visualize=True, eta_output=None):
+def main(model, eta_output, features=None, visualize=True):
     logging.info(f"\n{'-'*7} PREDICT ETa {'-'*7}\n\n")
     # Features to predict ETa
     X = pd.read_pickle(
@@ -123,18 +115,9 @@ def main(model, output=None, features=None, visualize=True, eta_output=None):
     if visualize:
         plot_prediction(eta, 'ETa', 'Measured and Predicted ETa (scaled)')
         plot_linear(model, measures, features)
-    if eta_output is not None:
-        # Save ETa
-        pd.to_pickle(eta, eta_output)
-        logging.info(f'Predictions saved in:\n{eta_output}')
-    elif output is not None:
-        # Compute Kc as ETa / ETo        
-        kc = compute_kc(eta)
-        if visualize:
-            plot_prediction(kc, 'Kc', 'Measured and Predicted Kc')
-        # Save Kc
-        pd.to_pickle(kc, output)
-        logging.info(f'Predictions saved in:\n{output}')
+    # Save ETa
+    pd.to_pickle(eta, eta_output)
+    logging.info(f'Predictions saved in:\n{eta_output}')
     logging.info(f'\n\n{"/"*30}\n\n')
     return None
 
@@ -152,6 +135,7 @@ def predict(model, output_file, visualize):
     From measured and predicted ETa computes KC dividing by measured ET0.
     """
     main(model, output_file, visualize)
+
 
 if __name__ == "__main__":
     predict()
