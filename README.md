@@ -15,15 +15,23 @@ In this case, the values of the root mean square error (RMSE) and coefficient of
 
 Finally, the results obtained show that the joint use of agro-meteorological and remote sensing data improves the performance of evapotranspiration forecasts compared with models using only weather variables. 
 
-## Structure
+## Installation
+To use this project in your machine you can download all files and save them to your local project folder, 
+or you can clone this repository.
+To clone the repository you should open the terminal inside your local project folder,
+and input:
+
+```console
+$ git clone https://github.com/fedesss98/ml-to-eta-of-citrus-orchards.git
+```
+
+Now your folder is populated by all files coming from this repository.
+
+### Folders Structure
 Be sure to have this structure in your project:
 
 <pre>
 ROOT
-|— PAPER\
-|  |—DRAFTS\
-|  |—BIBLIOGRAPHY\
-|  
 |— eta_ml\
 |   |- data\
 |   |   |- external\
@@ -47,13 +55,12 @@ ROOT
 |   
 </pre>
 
-## Installation
-Clone this repository:
+Use the file `environment.yml` to install dependencies using `pip` or `conda`.
 
-<code>
-$ git clone https://github.com/fedesss98/ml-to-eta-of-citrus-orchards.git
-</code>
+## Running the code
+### Setup data
+This projects needs data to run.
+Data can be in the form of a csv or pickle file with various *features* and one *target* as columns, and days as row indices.
 
-Use the file `environment.yml` to install dependencies.
 
 Run the script `eta_predict.py` inside `eta_ml` folder to generate predictions and models.
