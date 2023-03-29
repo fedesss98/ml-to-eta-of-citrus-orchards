@@ -58,10 +58,13 @@ ROOT
 Use the file `environment.yml` to install dependencies using `pip` or `conda`.
 
 Run the script `eta_predict.py` inside `eta_ml` folder to generate predictions and trained Machine Learning models.
+This is the reccomanded way to use this module, leaving untouched the underlying code and tinkering with parameters.
+Note that in `eta_predict.py` both positional arguments and named arguments are gathered in dictionaries with uppercase names, and that `main` functions of every `eta_ml` submodule are imported with the name of the file to explicit their function.
+
 In "[Running the Code - Overview](#running-the-code---overview)" you will find this project workflow to train ML models and generate predictions. 
 Details on code's inputs will be given in the Section "[Parameters](#parameters)".
 
-Note in `eta_predict.py` both positional arguments and named arguments are gathered in dictionaries with uppercase names, and that `main` functions of every `eta_ml` submodule are imported with the name of the file to explicit their function.
+All those submodules are integrated in `eta_predict.py` in the order presented below.
 
 ## Running the Code - Overview
 ### Setup Data
@@ -173,7 +176,7 @@ eta_output [string or pathlib.Path]: position of the rescaled time series of tar
 Options
 _______
 features [list] (default = all features): list of features to use for predictions,
-visualize [boolean] (default = True): indicates wether to plot target predictions and measures and confront them in a linear measures vs predictions plot.
+visualize [boolean] (default = True): indicates wether to plot or not target predictions and measures and confront them in a linear measures vs predictions plot.
 </pre>
 
 ---

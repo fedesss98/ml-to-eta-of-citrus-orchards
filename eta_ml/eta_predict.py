@@ -3,13 +3,26 @@
 Created on Fri Feb 24 12:47:04 2023
 
 @author: Federico Amato
+
+For every specified regressor and every set of features,
+goes through all the pipeline of:
+ - preprocessing the data,
+ - training a model and cross-validate it,
+ - taking scores and relative errors on test data,
+ - taking the best-scoring model,
+ - outputting and saving scores and relative errors
+
+Every text output displayed in console is also written on the file
+'logs/et_predict.log'.
+Everything is traked using an identifying code.
+This code is used to save scores and relative errors in a CSV files,
+and to keep trak of the output in the log file.
 """
 from eta_ml.data.make_data import main as make_data
 from eta_ml.data.preprocess import main as preprocess_data
 from eta_ml.models.make_model import ModelTrainer
 from eta_ml.prediction.predict import main as predict
 
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.neural_network import MLPRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
@@ -91,7 +104,7 @@ PREPROCESS_PARAMETERS = {
     'features': None,
     'scaler': 'MinMax',
     'folds': 4,
-    'k_seed': 325,  # 24
+    'k_seed': 24,  # best seed found: 24
     'output_file': ROOT_DIR / 'data/processed/processed.pickle',
     'visualize': False,
     }
@@ -104,6 +117,10 @@ PREDICTION_PARAMETERS = {
 
 
 def setup_logging():
+    """
+    Configure the logging module to print messages on a file
+    and create a unique logging ID to save results
+    """
     # Config logging module
     logging.basicConfig(
         encoding='utf-8',
@@ -117,14 +134,14 @@ def setup_logging():
     # Create a logging ID
     random_digits = str(random.randint(0, 99999)).zfill(5)
     random_character = random.choice(string.ascii_uppercase)
-    log_id =  random_digits +random_character
+    log_id = random_digits + random_character
     logging.info(f'__________________________________\n{str(datetime.datetime.now())}')
     logging.info(f"\nStarting run ID {log_id}")
     return log_id
 
 
 def clean_processed_dir():
-    # Remove train/test folds files from processed folder
+    """ Remove train/test folds files from processed folder """
     processed_dir = ROOT_DIR / 'data/processed'
     # Iterate over all files in the folder
     for file in processed_dir.iterdir():
@@ -136,14 +153,17 @@ def clean_processed_dir():
 
 
 def make_prediction(features_set, model_name, model_scores, kts):
+    """ Goes through the prediction pipeline for one model and one feature set """
     logging.info(f"\n{'*'*5} {model_name.upper()} {features_set.upper()} {'*'*5}\n")
-    
+
+    # Takes features from current features set
     features = FEATURES[features_set]
     
     # Update parameters with model features
     PREPROCESS_PARAMETERS.update({'features': features})
     PREDICTION_PARAMETERS.update({'features': features})
-    
+
+    # Impute, scale and split in folds the data
     preprocess_data(**PREPROCESS_PARAMETERS)
     
     MODEL_PARAMETERS = {
@@ -152,24 +172,26 @@ def make_prediction(features_set, model_name, model_scores, kts):
             'features': features,
             'visualize_error': False,
         }
-    
+    # Create a ModelTrainer object which train the model on every fold
+    # and computes scores and relative errors
     trainer = ModelTrainer(**MODEL_PARAMETERS)
+    # Update Model scores dictionary with current model scores
     model_scores[model_name][features_set] = trainer.scores
+    # Update Relative errors dictionary with current model prediction's errors series
     kts[model_name][features_set] = trainer.kt
-
+    # Use the best model across folds to predict the target
     predict(model=f'{model_name}.joblib', **PREDICTION_PARAMETERS)
     
     return model_scores
 
 
 def prettify_scores(scores):
-    """
-    Make a MultiIndex DataFrame from the nested dictionary of scores.
-
-    """
+    """ Make a MultiIndex DataFrame from the nested dictionary of scores """
     metrics_used = ['r2', 'rmse']
     # Create tuple keys for dictionary
-    scores = {(outer_key, inner_key): values.ravel() for outer_key, inner_dict in scores.items() for inner_key, values in inner_dict.items()}
+    scores = {(outer_key, inner_key): values.ravel()
+              for outer_key, inner_dict in scores.items()
+              for inner_key, values in inner_dict.items()}
     # Create rows MultiIndex
     index = pd.MultiIndex.from_product(
         [[i+1 for i in range(PREPROCESS_PARAMETERS['folds'])], metrics_used],
@@ -182,17 +204,23 @@ def prettify_scores(scores):
 
 
 def reframe_kts(kts):
+    """ Make a MultiIndex DataFrame for Relative errors """
     # Take the temporal index
     idx = kts[list(MODELS.keys())[0]][list(FEATURES.keys())[0]].index
     # Create tuple keys for dictionary
     kts = {(model, feature_set): values.Kt.ravel() 
            for model, inner_dict in kts.items() 
            for feature_set, values in inner_dict.items()}
+    # Create DataFrame from dictionary
     kts = pd.DataFrame(kts, index=idx)
     return kts
 
 
 def make_violins(kts, suptitle=None):
+    """
+    Make Violin Plots using Seaborn:
+    they show distributions of different models' relative errors
+    """
     models = kts.columns.get_level_values(0).unique()
     fig, axs = plt.subplots(len(models), figsize=(12, 6*len(models)))
     if suptitle is not None:
@@ -215,20 +243,20 @@ def make_violins(kts, suptitle=None):
     return axs
 
 
-# %% MAIN
+# MAIN
 def main():
-
     # Logging setup
+    # Every run of this program use a random ID
     log_id = setup_logging()    
     # Clean directory with train/test data
     clean_processed_dir()
-            
+
     make_data(**MAKE_DATA_PARAMETERS)
-    # Models scores
+    # Initialize Models scores dictionaries to keep track of scores
     model_scores = {regressor: {} for regressor in MODELS}
-    # Relative Errors for every model
+    # Initialize Relative Errors dictionary for every model
     kts = {regressor: {} for regressor in MODELS}
-    # Iterate over features sets and models    
+    # Iterate over features sets and models
     for model_name, features_set in itertools.product(MODELS, FEATURES):
         # Make cross-predictions and get the scores
         model_scores = make_prediction(features_set, model_name, model_scores, kts)
@@ -246,8 +274,8 @@ def main():
     print("Process finished with log ID: ", log_id)
     
     return None
-        
 
-# %% Entry point
+
+# Entry point
 if __name__ == "__main__":
     main()

@@ -21,6 +21,7 @@ ROOT_DIR = Path(__file__).parent.parent.parent
 
 
 def ask_for_model():
+    """ If no model name is given, looks for saved models and ask to choose one """
     saved_models = list(ROOT_DIR.glob('models/*'))
     print(f"You have {len(saved_models)} saved:")
     for m in saved_models:
