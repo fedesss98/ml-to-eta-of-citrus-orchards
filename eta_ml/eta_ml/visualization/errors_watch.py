@@ -30,12 +30,15 @@ def ask_for_run_id():
 def read_kts(run_id):
     if run_id is None:
         run_id = ask_for_run_id()
-    
-    kts = pd.read_csv(ROOT_DIR / f'data/predicted/kts_{run_id}.csv', sep=';',
-                      index_col=0, header=[0, 1],
-                      parse_dates=True,
-                      infer_datetime_format=True)
-    return kts
+
+    return pd.read_csv(
+        ROOT_DIR / f'data/predicted/kts_{run_id}.csv',
+        sep=';',
+        index_col=0,
+        header=[0, 1],
+        parse_dates=True,
+        infer_datetime_format=True,
+    )
 
 
 def make_violins(kts, suptitle=None):
