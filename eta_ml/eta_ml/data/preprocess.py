@@ -43,12 +43,11 @@ NN = 5  # Number of neighboring samples to use for imputation
 
 
 def get_data(fname):
-    df = pd.read_pickle(fname)
-    return df
+    return pd.read_pickle(fname)
 
 
 def get_features(df, features):
-    if len(features) <= 0:
+    if not isinstance(features, list):
         features = [
             'Rs',
             'Tavg',
@@ -71,9 +70,7 @@ def make_dataframe(data, features):
     """Selects only relevant features (Model #1 in previous experiments)"""
     features = get_features(data, features)
     target = get_target(data)
-    # Concatenate features and target data
-    df = pd.concat([features, target], axis=1)
-    return df
+    return pd.concat([features, target], axis=1)
 
 
 def make_scaler(scaler):
@@ -86,7 +83,7 @@ def make_scaler(scaler):
         try:
             scaler.set_params()
         except Exception as e:
-            raise Exception(f'Error with the scaler:\n{str(e)}')
+            raise Exception(f'Error with the scaler:\n{str(e)}') from e
     return scaler
 
 
@@ -101,10 +98,7 @@ def impute_features(df, features):
     eta_values = df['ETa'].values.reshape(-1, 1)
     # and merge it with imputed feature values
     imputed_values = np.append(imputed_values, eta_values, axis=1)
-    # Make DataFrame
-    imputed_data = pd.DataFrame(imputed_values, 
-                                columns=df.columns, index=df.index)
-    return imputed_data
+    return pd.DataFrame(imputed_values, columns=df.columns, index=df.index)
 
 
 def split_folds(df, k, k_seed=2):
@@ -149,7 +143,8 @@ def scale_data(df, scaler):
 #     json.dump(json_log, ROOT_DIR/'docs'/'run.json')
 
 
-def main(input_file, scaler, folds, k_seed, output_file, features=[], visualize=True):
+def main(input_file, scaler, folds, k_seed, output_file, features=None, visualize=True):
+
     logging.info(f'\n\n{"-"*5} PREPROCESSING {"-"*5}\n\n')
     logging.info(f"Preprocessing file:\n{input_file}")
     data = get_data(input_file)

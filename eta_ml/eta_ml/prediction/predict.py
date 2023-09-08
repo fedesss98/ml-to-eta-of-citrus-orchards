@@ -33,8 +33,7 @@ def ask_for_model():
 def load_model(model_name):
     if model_name is None:        
         model_name = ask_for_model()
-    model = joblib.load(ROOT_DIR/'models'/f'{model_name}')
-    return model
+    return joblib.load(ROOT_DIR/'models'/f'{model_name}')
 
 
 def fill_eta(eta):

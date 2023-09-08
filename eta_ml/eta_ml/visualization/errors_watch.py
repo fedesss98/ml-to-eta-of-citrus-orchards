@@ -30,12 +30,15 @@ def ask_for_run_id():
 def read_kts(run_id):
     if run_id is None:
         run_id = ask_for_run_id()
-    
-    kts = pd.read_csv(ROOT_DIR / f'data/predicted/kts_{run_id}.csv', sep=';',
-                      index_col=0, header=[0, 1],
-                      parse_dates=True,
-                      infer_datetime_format=True)
-    return kts
+
+    return pd.read_csv(
+        ROOT_DIR / f'data/predicted/kts_{run_id}.csv',
+        sep=';',
+        index_col=0,
+        header=[0, 1],
+        parse_dates=True,
+        infer_datetime_format=True,
+    )
 
 
 def make_violins(kts, suptitle=None):
@@ -48,7 +51,7 @@ def make_violins(kts, suptitle=None):
     ax.set_ylim(-1.5, 3.1)
     ax.tick_params(axis='x', rotation=45)
     ax.axhline(y=0, ls='--', c='k')
-    ax.set_ylabel("Relative error [mm/day]", fontsize=PLOTS_FONT_SIZE*1.2)
+    ax.set_ylabel("Relative error [%]", fontsize=PLOTS_FONT_SIZE*1.2)
     # Set size of fonts
     plt.xticks(size=PLOTS_FONT_SIZE)
     plt.yticks(size=PLOTS_FONT_SIZE)

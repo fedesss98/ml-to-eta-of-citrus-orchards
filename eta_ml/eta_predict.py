@@ -65,13 +65,13 @@ FEATURES = {
     'model 2': m2,
     'model 3': m3,
     'model 4': m4, 
-    'model 5': m5, 
-    'model 6': m6, 
-    'model 7': m7,
+    # 'model 5': m5, 
+    # 'model 6': m6, 
+    # 'model 7': m7,
     'model 8': m8, 
     'model 9': m9,
-    'model 10': m10,  
-    'model 11': m11, 
+    # 'model 10': m10,  
+    # 'model 11': m11, 
     'model 12': m12, 
     }
 
@@ -82,11 +82,11 @@ MODELS = {
             random_state=12,
             ccp_alpha=0.0,        
         ),
-    'mlp': MLPRegressor(
-            hidden_layer_sizes=(100, 100, 100),
-            max_iter=1000,
-            random_state=32652,  # 32652
-        ),
+    # 'mlp': MLPRegressor(
+        #     hidden_layer_sizes=(100, 100, 100),
+        #     max_iter=1000,
+        #     random_state=32652,  # 32652
+        # ),
     # 'knn': KNeighborsRegressor(
     #     n_neighbors=5,
     #     weights='distance',        
@@ -165,10 +165,10 @@ def make_prediction(features_set, model_name, model_scores, kts):
 
     # Impute, scale and split in folds the data
     preprocess_data(**PREPROCESS_PARAMETERS)
-    
+    model_name_to_save = model_name.upper() + '_' + features_set.strip('model ')
     MODEL_PARAMETERS = {
             'model': MODELS[model_name],
-            'model_name': model_name,
+            'model_name': model_name_to_save,
             'features': features,
             'visualize_error': False,
         }
@@ -180,7 +180,7 @@ def make_prediction(features_set, model_name, model_scores, kts):
     # Update Relative errors dictionary with current model prediction's errors series
     kts[model_name][features_set] = trainer.kt
     # Use the best model across folds to predict the target
-    predict(model=f'{model_name}.joblib', **PREDICTION_PARAMETERS)
+    predict(model=f'{model_name_to_save}.joblib', **PREDICTION_PARAMETERS)
     
     return model_scores
 
@@ -228,10 +228,7 @@ def make_violins(kts, suptitle=None):
     else:
         fig.suptitle(suptitle, fontsize=18)
     for i, m in enumerate(models):
-        if len(models) > 1:
-            ax = axs[i]
-        else:
-            ax = axs
+        ax = axs[i] if len(models) > 1 else axs
         ax.set_title(m.upper())
         data_to_plot = kts.loc[:, m]
         sns.violinplot(data_to_plot, ax=ax)

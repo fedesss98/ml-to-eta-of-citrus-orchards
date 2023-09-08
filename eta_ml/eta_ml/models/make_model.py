@@ -33,7 +33,7 @@ ROOT_DIR = Path(__file__).parent.parent.parent
 class ModelTrainer:
     def __init__(self, model, model_name, features, visualize_error=False, **kwargs):
         logging.info(f'\n\n{"-"*7} {model_name.upper()} MODEL TRAINING {"-"*7}\n\n')
-        
+
         self.features = features
         self.model = model
         self.model_name = model_name
@@ -42,7 +42,7 @@ class ModelTrainer:
         # Find folds data
         k = len(list(ROOT_DIR.glob('data/processed/test_fold_*')))
         # Initialize models dictionary
-        models = dict()
+        models = {}
         self.scores = np.zeros((k, 2))
         for fold in range(k):
             trained_model = self.train_model(self.model, fold)
@@ -78,9 +78,7 @@ class ModelTrainer:
         q = 0.2
         d = 10
         v = 60 * 1/(x+d)
-        # Shifted Sine function
-        y = a*np.sin(np.pi*v*x - np.pi*phase) - q
-        return y
+        return a*np.sin(np.pi*v*x - np.pi*phase) - q
 
     def train_model(self, model, k):
         train = pd.read_pickle(ROOT_DIR/'data/processed'/f'train_fold_{k}.pickle')
@@ -147,8 +145,7 @@ class ModelTrainer:
         self.make_kt(kt, k)
         logging.info(f'R2 score on test {k}: {r2_scaled:.2f} - {r2:.2f}'
                      f'\nRMSE score on test: {rmse_scaled:.2f} - {rmse:.2f}')
-        scores = (r2, rmse)
-        return scores
+        return r2, rmse
 
     def save_model(self):
         dump(self.best_model, ROOT_DIR/'models'/f'{self.model_name}.joblib')
