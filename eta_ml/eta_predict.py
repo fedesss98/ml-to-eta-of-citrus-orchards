@@ -228,10 +228,7 @@ def make_violins(kts, suptitle=None):
     else:
         fig.suptitle(suptitle, fontsize=18)
     for i, m in enumerate(models):
-        if len(models) > 1:
-            ax = axs[i]
-        else:
-            ax = axs
+        ax = axs[i] if len(models) > 1 else axs
         ax.set_title(m.upper())
         data_to_plot = kts.loc[:, m]
         sns.violinplot(data_to_plot, ax=ax)
